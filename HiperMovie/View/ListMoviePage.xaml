@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    x:Class="HiperMovie.View.ListMoviePage"
+    xmlns:convert="clr-namespace:HiperMovie.Converter"
+    BackgroundColor="#F5F5F5"
+    Title="HIPER - Desafio técnico">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <convert:PreOverviewConverter x:Key="cvtOverview"></convert:PreOverviewConverter>
+            <convert:DateReleaseConverter x:Key="cvtDateColor"></convert:DateReleaseConverter>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <!--ContentPage.ToolbarItems>
+        <ToolbarItem Activated="HandleSearchActivated" Name="Search" Order="Primary" Icon="ic_menu_search.png" Text="Item 1" Priority="0" />
+    </ContentPage.ToolbarItems-->
+
+    <StackLayout>
+    <StackLayout Orientation="Horizontal" Margin="5,5,5,0" BackgroundColor="White">
+        <Entry x:Name="fieldSearch" Placeholder="Digite seu busca" HorizontalOptions="FillAndExpand" ></Entry>
+        <Button x:Name="btSearch" Text="Buscar" HorizontalOptions="FillAndExpand" Command="{Binding SeachMovieCommand}" CommandParameter="{Binding Source={x:Reference fieldSearch}, Path=Text}"></Button>
+    </StackLayout>
+    
+    <!--ScrollView Padding="7"-->
+        <!--StackLayout RowHeight="145"-->
+        <ListView ItemsSource="{Binding Movies}"
+            RowHeight="145"
+            IsPullToRefreshEnabled="true"
+            RefreshCommand="{Binding RefreshCommand}"
+            IsRefreshing="{Binding IsRefreshing}"
+            ItemTapped="HandleViewMovie"
+            SeparatorVisibility="None"
+            BackgroundColor="Transparent">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <ViewCell.View>
+                            <StackLayout Orientation="Horizontal" Margin="0,0,0,7" BackgroundColor="{Binding release_date, Converter={StaticResource cvtDateColor}}" Spacing="5">
+
+                                <Image WidthRequest="92" Source="{Binding poster_path}" />
+
+                                <StackLayout HeightRequest="125" HorizontalOptions="FillAndExpand" Margin="5,0,0,0">
+                                    <Label Margin="0,15,0,0" Text="{Binding title}" TextColor="Black" VerticalOptions="Center" FontSize="13" FontAttributes="Bold" />
+                                    <Label Text="{Binding release_date, StringFormat='{0:yyyy}'}" TextColor="Gray" FontSize="12" />
+                                
+                                    <Label Text="{Binding overview, Converter={StaticResource cvtOverview}}" FontSize="12" Margin="0,0,5,0" />
+                                        
+                                    <StackLayout Orientation="Horizontal" VerticalOptions="FillAndExpand" Margin="0,0,0,5">
+                                        <Image HorizontalOptions="EndAndExpand" WidthRequest="20" Source="estrela" />
+                                        <Label Margin="0,0,5,0" HorizontalOptions="End" Text="{Binding vote_average}" FontSize="13" VerticalOptions="Center" />
+                                    </StackLayout>
+                                </StackLayout>
+
+                            </StackLayout>
+                        </ViewCell.View>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <!--/StackLayout-->
+    <!--/ScrollView-->
+        </StackLayout>
+
+</ContentPage>
